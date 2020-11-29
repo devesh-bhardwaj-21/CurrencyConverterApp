@@ -1,6 +1,6 @@
-/*plugins {
+plugins {
     `kotlin-dsl`
 }
 repositories {
     jcenter()
-}*/
+}

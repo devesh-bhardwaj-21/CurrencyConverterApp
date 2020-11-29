@@ -1,3 +1,4 @@
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -65,21 +66,21 @@ dependencies {
     implementation Config.Libs.liveData
     implementation Config.Libs.viewBindingPropertyDelegate
     implementation Config.Libs.retrofit
-    implementation Config.Libs.gsonVersion
+    implementation Config.Libs.gson
     implementation Config.Libs.ConverterGson
     implementation Config.Libs.okhttpInterceptor
     implementation Config.Libs.navigationFragmentVersion
     implementation Config.Libs.navigationUiVersion
     implementation Config.Libs.legacySupport
-    implementation Config.Libs.coroutinesVersion
-    implementation Config.Libs.glideVersion
-    kapt Config.Libs.glideVersionKapt
-    implementation Config.Libs.hiltVersion
-    implementation Config.Libs.hiltVersionKapt
-    implementation Config.Libs.hiltVersion
-    kapt Config.Libs.hiltVersionKapt
-    implementation Config.Libs.hiltJetpackIntegrationVersion
-    kapt Config.Libs.hiltJetpackIntegrationVersionKapt
+    implementation Config.Libs.coroutines
+    implementation Config.Libs.glide
+    kapt Config.Libs.glideKapt
+    implementation Config.Libs.hilt
+    implementation Config.Libs.hiltKapt
+    implementation Config.Libs.hilt
+    kapt Config.Libs.hiltKapt
+    implementation Config.Libs.hiltJetpackIntegration
+    kapt Config.Libs.hiltJetpackIntegrationKapt
 
     testCompile(Config.TestLibs.junit)
     androidTestCompile(Config.TestLibs.junitAndroidTestImpl)
