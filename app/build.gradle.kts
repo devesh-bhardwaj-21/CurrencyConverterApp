@@ -1,17 +1,21 @@
-
 plugins {
     id("com.android.application")
+
     kotlin("android")
+    id("kotlin-android")
     kotlin("kapt")
-    kotlin("dagger.hilt.android.plugin")
-    kotlin("kotlin-parcelize")
-    /*       kotlin("../ktlint.gradle")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-parcelize")
+    id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
+    /*
            kotlin("../detekt.gradle")*/
 }
 
 android {
     compileSdkVersion(Config.Android.compileSdkVersion)
     buildToolsVersion(Config.Android.buildToolsVersion)
+
+    sourceSets["main"].java.srcDir("src/main/kotlin")
 
     defaultConfig {
         applicationId = Config.Android.applicationId
@@ -40,49 +44,42 @@ android {
 
     android {
         compileOptions {
-            sourceCompatibility JavaVersion . VERSION_1_8
-                targetCompatibility JavaVersion . VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_1_8
+            targetCompatibility = JavaVersion.VERSION_1_8
         }
     }
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
-    }
-}
-
 dependencies {
-    implementation Config.Libs.kotlin_std
-    implementation  Config.Libs.appcompat
-    implementation Config.Libs.constraintLayout
-    implementation Config.Libs.lifecycleExtentions
-    implementation Config.Libs.coreKtx
-    implementation Config.Libs.fragmentKtx
-    implementation Config.Libs.liveData
-    implementation Config.Libs.viewBindingPropertyDelegate
-    implementation Config.Libs.retrofit
-    implementation Config.Libs.gson
-    implementation Config.Libs.ConverterGson
-    implementation Config.Libs.okhttpInterceptor
-    implementation Config.Libs.navigationFragmentVersion
-    implementation Config.Libs.navigationUiVersion
-    implementation Config.Libs.legacySupport
-    implementation Config.Libs.coroutines
-    implementation Config.Libs.glide
-    kapt Config.Libs.glideKapt
-    implementation Config.Libs.hilt
-    implementation Config.Libs.hiltKapt
-    implementation Config.Libs.hilt
-    kapt Config.Libs.hiltKapt
-    implementation Config.Libs.hiltJetpackIntegration
-    kapt Config.Libs.hiltJetpackIntegrationKapt
+    implementation(Config.Libs.kotlin_std)
+    implementation(Config.Libs.appcompat)
+    implementation(Config.Libs.constraintLayout)
+    implementation(Config.Libs.lifecycleExtentions)
+    implementation(Config.Libs.coreKtx)
+    implementation(Config.Libs.fragmentKtx)
+    implementation(Config.Libs.liveData)
+    implementation(Config.Libs.viewBindingPropertyDelegate)
+    implementation(Config.Libs.retrofit)
+    implementation(Config.Libs.gson)
+    implementation(Config.Libs.ConverterGson)
+    implementation(Config.Libs.okhttpInterceptor)
+    implementation(Config.Libs.navigationFragmentVersion)
+    implementation(Config.Libs.navigationUiVersion)
+    implementation(Config.Libs.legacySupport)
+    implementation(Config.Libs.coroutines)
 
-    testCompile(Config.TestLibs.junit)
-    androidTestCompile(Config.TestLibs.junitAndroidTestImpl)
-    androidTestCompile(Config.TestLibs.espresso)
+    implementation(Config.Libs.glide)
+    kapt(Config.Libs.glideKapt)
+
+    implementation(Config.Libs.hilt)
+    implementation(Config.Libs.hilt)
+    implementation(Config.Libs.hiltKapt)
+    kapt(Config.Libs.hiltKapt)
+
+    implementation(Config.Libs.hiltJetpackIntegration)
+    kapt(Config.Libs.hiltJetpackIntegrationKapt)
+
+    testImplementation(Config.TestLibs.junit)
+    androidTestImplementation(Config.TestLibs.junitAndroidTestImpl)
+    androidTestImplementation(Config.TestLibs.espresso)
 }

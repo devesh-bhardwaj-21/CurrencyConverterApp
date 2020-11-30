@@ -8,7 +8,8 @@ import com.google.android.material.snackbar.Snackbar
 fun showNoDataError(view: View?, errorMessage: String) {
     val snackBar = view?.let {
         Snackbar.make(
-            it, errorMessage,
+            it,
+            errorMessage,
             Snackbar.LENGTH_LONG
         ).setAction("Action", null)
     }
@@ -23,16 +24,11 @@ fun showNoDataError(view: View?, errorMessage: String) {
 
 val baseCurrencyValueList = arrayListOf("EUR", "USD", "INR", "RUB")
 
-
 inline class BaseUrl(val baseUrl: String)
 
 val baseUrl: BaseUrl = BaseUrl("https://revolut.duckdns.org/")
 
-class AppConstants {
-    companion object {
-        const val timeoutConnect = 30
-        const val timeoutRead = 30
-    }
+object AppConstants {
+    const val timeoutConnect = 30
+    const val timeoutRead = 30
 }
-
-

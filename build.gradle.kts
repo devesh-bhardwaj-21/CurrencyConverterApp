@@ -16,9 +16,11 @@ buildscript {
     }
 }
 
-/*plugins {
-    id("io.gitlab.arturbosch.detekt") version 1.15.0-RC1
-}*/
+plugins {
+  //  id("io.gitlab.arturbosch.detekt") version 1.15.0-RC1
+
+
+}
 
 allprojects {
     repositories {
@@ -27,6 +29,6 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+task<Delete>("clean") {
+    delete(rootProject.buildDir)
 }

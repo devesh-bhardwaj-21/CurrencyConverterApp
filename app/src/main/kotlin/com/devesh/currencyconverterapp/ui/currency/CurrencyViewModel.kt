@@ -39,5 +39,4 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
     fun onBaseCurrencyValueChanged(value: String) {
         interactor.onBaseCurrencyValueChanged(value)
     }
-
 }

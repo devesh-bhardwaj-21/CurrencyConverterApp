@@ -40,21 +40,23 @@ class CurrencyFragment : Fragment() {
     }
 
     private fun setUpObservers() {
-        viewModel.uiStateLiveData.observe(viewLifecycleOwner, { uiState ->
-            when (uiState) {
-                is UiState.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    adapter.submitList(uiState.data?.rates)
-                }
-                is UiState.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    showNoDataError(view,"\uD83D\uDE28 Wooops! Seems like something is wrong!")
-                }
-                is UiState.InProgress -> {
-                    binding.progressBar.visibility = View.VISIBLE
+        viewModel.uiStateLiveData.observe(
+            viewLifecycleOwner,
+            { uiState ->
+                when (uiState) {
+                    is UiState.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        adapter.submitList(uiState.data?.rateeees)
+                    }
+                    is UiState.Error -> {
+                        binding.progressBar.visibility = View.GONE
+                        showNoDataError(view, "\uD83D\uDE28 Wooops! Seems like something is wrong!")
+                    }
+                    is UiState.InProgress -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
                 }
             }
-        })
+        )
     }
-
 }

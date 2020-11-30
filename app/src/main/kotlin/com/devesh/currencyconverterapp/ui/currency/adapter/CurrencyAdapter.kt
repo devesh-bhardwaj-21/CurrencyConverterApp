@@ -5,11 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.devesh.currencyconverterapp.data.api.model.Rate
 import com.devesh.currencyconverterapp.databinding.CurrencyItemBinding
 
 class CurrencyAdapter :
-    ListAdapter<Rate, CurrencyAdapter.ViewHolder>(CurrencyConverterDiffCallback()) {
+    ListAdapter<Rateeee, CurrencyAdapter.ViewHolder>(CurrencyConverterDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -28,20 +27,20 @@ class CurrencyAdapter :
 
     class ViewHolder constructor(binding: CurrencyItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Rate) {
+        fun bind(item: Rateeee) {
         }
     }
 }
 
-class CurrencyConverterDiffCallback : DiffUtil.ItemCallback<Rate>() {
-    override fun areItemsTheSame(oldItem: Rate, newItem: Rate): Boolean {
+class CurrencyConverterDiffCallback : DiffUtil.ItemCallback<Rateeee>() {
+    override fun areItemsTheSame(oldItem: Rateeee, newItem: Rateeee): Boolean {
         return oldItem.key == newItem.key &&
             oldItem.name == newItem.name &&
             oldItem.value == newItem.value &&
             oldItem.position == newItem.position
     }
 
-    override fun areContentsTheSame(oldItem: Rate, newItem: Rate): Boolean {
+    override fun areContentsTheSame(oldItem: Rateeee, newItem: Rateeee): Boolean {
         return oldItem == newItem
     }
 }

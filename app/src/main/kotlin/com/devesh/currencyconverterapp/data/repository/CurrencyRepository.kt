@@ -1,7 +1,6 @@
 package com.devesh.currencyconverterapp.data.repository
 
 import com.devesh.currencyconverterapp.data.api.ApiService
-import com.devesh.currencyconverterapp.data.api.model.RemoteRate
 import com.devesh.currencyconverterapp.utils.baseCurrencyValueList
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow

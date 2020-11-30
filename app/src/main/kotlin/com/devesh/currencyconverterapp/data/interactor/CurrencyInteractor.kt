@@ -1,6 +1,5 @@
 package com.devesh.currencyconverterapp.data.interactor
 
-import com.devesh.currencyconverterapp.data.api.model.RemoteRate
 import com.devesh.currencyconverterapp.data.repository.CurrencyRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +17,5 @@ class CurrencyInteractor @Inject constructor(private val repository: CurrencyRep
     }
 
     fun onBaseCurrencyValueChanged(value: String) {
-
     }
 }
