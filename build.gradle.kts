@@ -17,9 +17,7 @@ buildscript {
 }
 
 plugins {
-  //  id("io.gitlab.arturbosch.detekt") version 1.15.0-RC1
-
-
+    id("io.gitlab.arturbosch.detekt") version "1.15.0-RC1"
 }
 
 allprojects {

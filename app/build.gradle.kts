@@ -7,8 +7,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
     id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
-    /*
-           kotlin("../detekt.gradle")*/
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -72,9 +71,9 @@ dependencies {
     kapt(Config.Libs.glideKapt)
 
     implementation(Config.Libs.hilt)
-    implementation(Config.Libs.hilt)
-    implementation(Config.Libs.hiltKapt)
+    implementation(Config.Libs.hiltJetpackIntegration)
     kapt(Config.Libs.hiltKapt)
+    kapt(Config.Libs.hiltJetpackIntegrationKapt)
 
     implementation(Config.Libs.hiltJetpackIntegration)
     kapt(Config.Libs.hiltJetpackIntegrationKapt)

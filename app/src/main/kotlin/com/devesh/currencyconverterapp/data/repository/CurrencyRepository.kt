@@ -1,6 +1,7 @@
 package com.devesh.currencyconverterapp.data.repository
 
 import com.devesh.currencyconverterapp.data.api.ApiService
+import com.devesh.currencyconverterapp.data.api.model.CurrencyModel
 import com.devesh.currencyconverterapp.utils.baseCurrencyValueList
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,7 @@ class CurrencyRepository @Inject constructor(private val apiService: ApiService)
     private val coroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private var currentBaseValue: String = ""
 
-    private val currencyStateFlow = MutableStateFlow<RemoteRate?>(null)
+    private val currencyStateFlow = MutableStateFlow<CurrencyModel?>(null)
 
     init {
         if (currentBaseValue.isEmpty())
@@ -36,7 +37,7 @@ class CurrencyRepository @Inject constructor(private val apiService: ApiService)
         }
     }
 
-    fun getCurrencyStateFlow(): StateFlow<RemoteRate?> {
+    fun getCurrencyStateFlow(): StateFlow<CurrencyModel?> {
         return currencyStateFlow
     }
 
