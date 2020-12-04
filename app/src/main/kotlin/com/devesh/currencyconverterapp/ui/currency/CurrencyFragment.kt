@@ -7,20 +7,29 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.devesh.currencyconverterapp.R
 import com.devesh.currencyconverterapp.databinding.CurrencyFragmentBinding
 import com.devesh.currencyconverterapp.ui.currency.adapter.CurrencyAdapter
-import com.devesh.currencyconverterapp.utils.UiState
+import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import com.devesh.currencyconverterapp.utils.showNoDataError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class CurrencyFragment : Fragment() {
+class CurrencyFragment : Fragment(R.layout.currency_fragment) {
 
     private val viewModel: CurrencyViewModel by viewModels()
-    private val binding by viewBinding<CurrencyFragmentBinding>()
+    private val binding: CurrencyFragmentBinding by viewBinding()
     private val adapter: CurrencyAdapter = CurrencyAdapter()
+
+    fun onBaseValueChanged(uiCurrencyModel: UiCurrencyModel) {
+        viewModel.onBaseValueChanged(uiCurrencyModel.currencyCode)
+    }
+
+    fun onBaseCurrencyValueChanged(uiCurrencyModel: UiCurrencyModel) {
+        viewModel.onBaseCurrencyValueChanged(uiCurrencyModel.currencyCode, uiCurrencyModel.currencyValue)
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -44,16 +53,15 @@ class CurrencyFragment : Fragment() {
             viewLifecycleOwner,
             { uiState ->
                 when (uiState) {
-                    is UiState.Success -> {
+                    is CurrencyViewModel.UiState.Success -> {
                         binding.progressBar.visibility = View.GONE
-                        adapter.submitList(uiState.data?.rateeees)
+                        adapter.submitList(uiState.data)
                     }
-                    is UiState.Error -> {
+                    is CurrencyViewModel.UiState.Error -> {
                         binding.progressBar.visibility = View.GONE
                         showNoDataError(view, "\uD83D\uDE28 Wooops! Seems like something is wrong!")
                     }
-                    is UiState.InProgress -> {
-                        binding.progressBar.visibility = View.VISIBLE
+                    is CurrencyViewModel.UiState.InProgress -> {
                     }
                 }
             }

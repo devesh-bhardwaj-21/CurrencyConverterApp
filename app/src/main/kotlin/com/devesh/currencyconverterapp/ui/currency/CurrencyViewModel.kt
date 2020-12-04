@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devesh.currencyconverterapp.data.interactor.CurrencyInteractor
-import com.devesh.currencyconverterapp.utils.UiState
+import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
@@ -20,11 +20,11 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
     private val _uiStateData = MutableLiveData<UiState>(UiState.InProgress)
     val uiStateLiveData get(): LiveData<UiState> = _uiStateData
 
-    init {
+    fun onBaseValueChanged(base: String) {
         val exceptionHandler =
             CoroutineExceptionHandler { _, _ -> _uiStateData.postValue(UiState.Error) }
         viewModelScope.launch(exceptionHandler) {
-            interactor.getCurrencyStateFlow()
+            interactor.getCurrencyStateFlow(base)
                 .catch { e ->
                     _uiStateData.postValue(UiState.Error)
                 }
@@ -32,11 +32,13 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
         }
     }
 
-    fun onBaseValueChanged(value: String) {
-        interactor.onBaseValueChanged(value)
+    fun onBaseCurrencyValueChanged(base: String, value: Double) {
+        interactor.onBaseCurrencyValueChanged(base, value)
     }
 
-    fun onBaseCurrencyValueChanged(value: String) {
-        interactor.onBaseCurrencyValueChanged(value)
+    sealed class UiState {
+        data class Success(val data: List<UiCurrencyModel>) : UiState()
+        object Error : UiState()
+        object InProgress : UiState()
     }
 }

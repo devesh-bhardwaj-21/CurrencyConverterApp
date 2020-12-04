@@ -33,7 +33,7 @@ data class Rates(@SerializedName("CHF")
                  @SerializedName("PHP")
                  val php: Double = 0.0,
                  @SerializedName("TRY")
-                 val liraTRY: Double = 0.0,
+                 val TRY: Double = 0.0,
                  @SerializedName("RUB")
                  val rub: Double = 0.0,
                  @SerializedName("HKD")

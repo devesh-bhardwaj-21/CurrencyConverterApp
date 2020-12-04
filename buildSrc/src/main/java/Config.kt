@@ -8,7 +8,7 @@ private const val lifecycleExtentionsVersion = "2.2.0"
 private const val coreKtxVersion = "1.3.2"
 private const val fragmentKtxVersion = "1.2.5"
 private const val liveDataVersion = "2.2.0"
-private const val viewBindingPropertyDelegateVersion = "1.2.1"
+private const val viewBindingPropertyDelegateVersion = "1.3.1"
 private const val legacySupportVersion = "1.0.0"
 private const val navigationVersion = "2.3.1"
 private const val retrofitVersion = "2.9.0"
@@ -22,6 +22,10 @@ private const val hiltJetpackIntegrationVersion = "1.0.0-alpha02"
 
 
 object Config {
+
+    object Repositories {
+        val mavenUrl = "http://dl.bintray.com/kotlin/kotlin-eap"
+    }
 
     object BuildPlugins {
         val androidGradle = "com.android.tools.build:gradle:${androidGradleVersion}"

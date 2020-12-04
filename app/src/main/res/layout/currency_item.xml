@@ -3,41 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp"
-    android:id="@+id/parent_layout"
+    android:id="@+id/currency_layout"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
 
     <ImageView
-        android:id="@+id/rateFlag"
+        android:id="@+id/currency_flag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/rateSymbol"
-        android:layout_alignTop="@id/rateName"
+        android:layout_alignBottom="@id/currency_name"
+        android:layout_alignTop="@id/currency_code"
         android:layout_marginEnd="10dp"
         android:src="@drawable/ic_eur_flag"/>
 
     <TextView
-        android:id="@+id/rateName"
+        android:id="@+id/currency_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/rateFlag"
+        android:layout_toEndOf="@id/currency_flag"
         android:text="EUR"
         android:textColor="@android:color/black"
         android:textSize="18sp"/>
 
     <TextView
-        android:id="@+id/rateSymbol"
+        android:id="@+id/currency_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rateName"
-        android:layout_toEndOf="@id/rateFlag"
+        android:layout_below="@id/currency_code"
+        android:layout_toEndOf="@id/currency_flag"
         android:text="Euro"
         android:textColor="#919294"
         android:textSize="14sp"/>
 
     <EditText
-        android:id="@+id/rateCount"
+        android:id="@+id/currency_count"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

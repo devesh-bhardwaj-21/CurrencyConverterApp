@@ -4,6 +4,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven(url = Config.Repositories.mavenUrl)
     }
     dependencies {
         classpath(Config.BuildPlugins.androidGradle)
@@ -24,6 +25,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven(url = Config.Repositories.mavenUrl)
     }
 }
 

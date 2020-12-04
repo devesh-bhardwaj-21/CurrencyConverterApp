@@ -23,22 +23,17 @@ class CurrencyRepository @Inject constructor(private val apiService: ApiService)
         coroutineScope.launch { refreshCurrencyStateFlow() }
     }
 
+    suspend fun getCurrencyStateFlow(base: String): StateFlow<CurrencyModel?> {
+        currentBaseValue = base
+        refreshCurrencyStateFlow()
+        return currencyStateFlow
+    }
+
     private suspend fun refreshCurrencyStateFlow() {
         while (true) {
             delay(REFRESH_DELAY)
             currencyStateFlow.value = apiService.getCurrencyStateFlow(currentBaseValue)
         }
-    }
-
-    fun onBaseValueChanged(value: String) {
-        currentBaseValue = value
-        coroutineScope.launch {
-            refreshCurrencyStateFlow()
-        }
-    }
-
-    fun getCurrencyStateFlow(): StateFlow<CurrencyModel?> {
-        return currencyStateFlow
     }
 
     companion object {
