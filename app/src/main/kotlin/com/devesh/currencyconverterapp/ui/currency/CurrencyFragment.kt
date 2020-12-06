@@ -14,6 +14,7 @@ import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import com.devesh.currencyconverterapp.utils.showNoDataError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -22,13 +23,29 @@ class CurrencyFragment : Fragment(R.layout.currency_fragment) {
     private val viewModel: CurrencyViewModel by viewModels()
     private val binding: CurrencyFragmentBinding by viewBinding()
     private val adapter: CurrencyAdapter = CurrencyAdapter()
+    private val uiCurrencyModelList = mutableListOf<UiCurrencyModel>()
 
-    fun onBaseValueChanged(uiCurrencyModel: UiCurrencyModel) {
+    fun onBaseValueChanged(uiCurrencyModel: UiCurrencyModel, adapterPosition: Int) {
         viewModel.onBaseValueChanged(uiCurrencyModel.currencyCode)
-    }
+        if (uiCurrencyModel.currencyCode.equals(uiCurrencyModelList.first().currencyCode) && adapterPosition == 0) {
+            return
+        }
+        // shift selected currency to top of list. All other shift by one down
+        Collections.swap(uiCurrencyModelList, adapterPosition, 0)
+        adapter.notifyItemMoved(adapterPosition, 0)
 
-    fun onBaseCurrencyValueChanged(uiCurrencyModel: UiCurrencyModel) {
-        viewModel.onBaseCurrencyValueChanged(uiCurrencyModel.currencyCode, uiCurrencyModel.currencyValue)
+        for (i in 0 until uiCurrencyModelList.size) {
+            uiCurrencyModelList[i].multiplier.div(uiCurrencyModel.multiplier)
+            when (i) {
+                in 0 until adapterPosition -> {
+                    uiCurrencyModelList[i].multiplier = 1.0
+                }
+            }
+        }
+        adapter.notifyDataSetChanged()
+
+        // make sure user is on top of the list
+        binding.recyclerView.scrollToPosition(0)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -55,7 +72,9 @@ class CurrencyFragment : Fragment(R.layout.currency_fragment) {
                 when (uiState) {
                     is CurrencyViewModel.UiState.Success -> {
                         binding.progressBar.visibility = View.GONE
-                        adapter.submitList(uiState.data)
+                        uiCurrencyModelList.clear()
+                        uiCurrencyModelList.addAll(uiState.data)
+                        adapter.submitList(uiCurrencyModelList)
                     }
                     is CurrencyViewModel.UiState.Error -> {
                         binding.progressBar.visibility = View.GONE

@@ -32,10 +32,6 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
         }
     }
 
-    fun onBaseCurrencyValueChanged(base: String, value: Double) {
-        interactor.onBaseCurrencyValueChanged(base, value)
-    }
-
     sealed class UiState {
         data class Success(val data: List<UiCurrencyModel>) : UiState()
         object Error : UiState()
