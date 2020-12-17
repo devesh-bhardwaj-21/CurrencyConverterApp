@@ -78,6 +78,8 @@ dependencies {
     implementation(Config.Libs.hiltJetpackIntegration)
     kapt(Config.Libs.hiltJetpackIntegrationKapt)
 
+    implementation(Config.Libs.timber)
+
     testImplementation(Config.TestLibs.junit)
     androidTestImplementation(Config.TestLibs.junitAndroidTestImpl)
     androidTestImplementation(Config.TestLibs.espresso)

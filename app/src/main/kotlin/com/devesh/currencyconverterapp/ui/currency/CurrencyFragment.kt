@@ -14,6 +14,7 @@ import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import com.devesh.currencyconverterapp.utils.showNoDataError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import timber.log.Timber
 import java.util.*
 
 @ExperimentalCoroutinesApi
@@ -34,14 +35,7 @@ class CurrencyFragment : Fragment(R.layout.currency_fragment) {
         Collections.swap(uiCurrencyModelList, adapterPosition, 0)
         adapter.notifyItemMoved(adapterPosition, 0)
 
-        for (i in 0 until uiCurrencyModelList.size) {
-            uiCurrencyModelList[i].multiplier.div(uiCurrencyModel.multiplier)
-            when (i) {
-                in 0 until adapterPosition -> {
-                    uiCurrencyModelList[i].multiplier = 1.0
-                }
-            }
-        }
+        viewModel.onBaseCurrencyValueChanged(uiCurrencyModel, uiCurrencyModelList, adapterPosition)
         adapter.notifyDataSetChanged()
 
         // make sure user is on top of the list
@@ -78,6 +72,7 @@ class CurrencyFragment : Fragment(R.layout.currency_fragment) {
                     }
                     is CurrencyViewModel.UiState.Error -> {
                         binding.progressBar.visibility = View.GONE
+                        Timber.e("Api failure occurred!")
                         showNoDataError(view, "\uD83D\uDE28 Wooops! Seems like something is wrong!")
                     }
                     is CurrencyViewModel.UiState.InProgress -> {

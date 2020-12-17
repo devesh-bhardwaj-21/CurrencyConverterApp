@@ -12,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 
 @ExperimentalCoroutinesApi
 class CurrencyViewModel @ViewModelInject constructor(private val interactor: CurrencyInteractor) :
@@ -19,6 +20,17 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
 
     private val _uiStateData = MutableLiveData<UiState>(UiState.InProgress)
     val uiStateLiveData get(): LiveData<UiState> = _uiStateData
+
+    fun onBaseCurrencyValueChanged(uiCurrencyModel: UiCurrencyModel, uiCurrencyModelList: List<UiCurrencyModel>, adapterPosition: Int) {
+        for (i in 0 until uiCurrencyModelList.size) {
+            uiCurrencyModel.multiplier?.let { uiCurrencyModelList[i].multiplier?.div(it) }
+            when (i) {
+                in 0 until adapterPosition -> {
+                    uiCurrencyModelList[i].multiplier = BigDecimal("1.0")
+                }
+            }
+        }
+    }
 
     fun onBaseValueChanged(base: String) {
         val exceptionHandler =

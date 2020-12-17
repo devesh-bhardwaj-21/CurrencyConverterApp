@@ -19,6 +19,7 @@ private const val glideVersion = "4.11.0"
 private const val coroutinesVersion = "1.3.9"
 private const val hiltVersion = "2.28-alpha"
 private const val hiltJetpackIntegrationVersion = "1.0.0-alpha02"
+private const val timberVersion = "4.7.1"
 
 
 object Config {
@@ -79,6 +80,8 @@ object Config {
         val hiltKapt = "com.google.dagger:hilt-android-compiler:${hiltVersion}"
         val hiltJetpackIntegration = "androidx.hilt:hilt-lifecycle-viewmodel:${hiltJetpackIntegrationVersion}"
         val hiltJetpackIntegrationKapt = "androidx.hilt:hilt-compiler:${hiltJetpackIntegrationVersion}"
+
+        val timber = "com.jakewharton.timber:timber:${timberVersion}"
     }
 
     object TestLibs {

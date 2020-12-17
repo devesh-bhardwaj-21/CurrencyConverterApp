@@ -6,37 +6,33 @@ import com.devesh.currencyconverterapp.utils.baseCurrencyValueList
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class CurrencyRepository @Inject constructor(private val apiService: ApiService) {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
-    private var currentBaseValue: String = ""
+    private var currentBaseValue = baseCurrencyValueList.first()
 
     private val currencyStateFlow = MutableStateFlow<CurrencyModel?>(null)
 
     init {
-        if (currentBaseValue.isEmpty())
-            currentBaseValue = baseCurrencyValueList.first()
         coroutineScope.launch { refreshCurrencyStateFlow() }
     }
 
-    suspend fun getCurrencyStateFlow(base: String): StateFlow<CurrencyModel?> {
+    fun getCurrencyStateFlow(base: String): StateFlow<CurrencyModel?> {
         currentBaseValue = base
-        refreshCurrencyStateFlow()
         return currencyStateFlow
     }
 
     private suspend fun refreshCurrencyStateFlow() {
         while (true) {
-            delay(REFRESH_DELAY)
             currencyStateFlow.value = apiService.getCurrencyStateFlow(currentBaseValue)
+            delay(REFRESH_DELAY)
         }
     }
 
-    companion object {
-        val REFRESH_DELAY = TimeUnit.SECONDS.toMillis(1)
+    private companion object {
+        const val REFRESH_DELAY = 1000L
     }
 }

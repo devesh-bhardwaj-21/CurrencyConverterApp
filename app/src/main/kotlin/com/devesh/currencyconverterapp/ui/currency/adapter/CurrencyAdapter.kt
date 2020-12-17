@@ -14,19 +14,15 @@ import com.devesh.currencyconverterapp.databinding.CurrencyItemBinding
 import com.devesh.currencyconverterapp.ui.currency.CurrencyFragment
 import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.math.BigDecimal
 import java.text.NumberFormat
 import java.text.ParseException
-import java.util.*
-
-fun Number.roundTo(
-    numFractionDigits: Int
-) = "%.${numFractionDigits}f".format(this, Locale.ENGLISH).toDouble()
 
 @ExperimentalCoroutinesApi
 class CurrencyAdapter :
     ListAdapter<UiCurrencyModel, CurrencyAdapter.ViewHolder>(CurrencyConverterDiffCallback()) {
 
-    var newBaseCurrencyValue: Double? = 0.0
+    var newBaseCurrencyValue: BigDecimal? = null
     var numberFormat = NumberFormat.getInstance()
     private var baseCountView: EditText? = null
 
@@ -56,6 +52,7 @@ class CurrencyAdapter :
             if (!s.isNullOrEmpty()) {
                 try {
                     newBaseCurrencyValue = numberFormat.parse(s.toString())?.toDouble()
+                        ?.toBigDecimal()
                     // update all items except the first one
                     notifyItemRangeChanged(1, itemCount - 1)
                 } catch (e: ParseException) {
@@ -68,12 +65,13 @@ class CurrencyAdapter :
     inner class ViewHolder constructor(val binding: CurrencyItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(model: UiCurrencyModel) {
-            model.currencyValue = if (adapterPosition == 0) newBaseCurrencyValue else newBaseCurrencyValue?.let {
-                model.multiplier.times(
-                    it
-                )
-            }
-            model.currencyValue = model.currencyValue?.roundTo(2)
+            model.currencyValue =
+                if (adapterPosition == 0) newBaseCurrencyValue else newBaseCurrencyValue?.let {
+                    model.multiplier?.times(
+                        it
+                    )
+                }
+            model.currencyValue = model.currencyValue?.setScale(2, BigDecimal.ROUND_HALF_EVEN)
             binding.currencyCode.text = model.currencyCode
             binding.currencyName.text = itemView.context.getString(model.currencyNameId)
             binding.currencyFlag.setImageDrawable(
