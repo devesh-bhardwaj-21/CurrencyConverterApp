@@ -37,7 +37,7 @@ object Config {
 
     object Android {
         val buildToolsVersion = "29.0.3"
-        val minSdkVersion = 21
+        val minSdkVersion = 23
         val targetSdkVersion = 29
         val compileSdkVersion = 29
         val applicationId = "com.devesh.currencyconverterapp"

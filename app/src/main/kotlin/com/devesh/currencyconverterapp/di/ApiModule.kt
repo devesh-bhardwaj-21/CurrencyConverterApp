@@ -27,7 +27,7 @@ object ApiModule {
     @Singleton
     fun getRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(baseUrl.toString()).client(okHttpClient)
+            .baseUrl(baseUrl).client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

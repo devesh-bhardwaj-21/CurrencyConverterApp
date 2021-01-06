@@ -1,51 +1,99 @@
 package com.devesh.currencyconverterapp.ui.currency
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devesh.currencyconverterapp.data.interactor.CurrencyInteractor
 import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
+import com.devesh.currencyconverterapp.utils.baseCurrencyValueList
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
+import java.util.concurrent.CopyOnWriteArrayList
 
 @ExperimentalCoroutinesApi
 class CurrencyViewModel @ViewModelInject constructor(private val interactor: CurrencyInteractor) :
     ViewModel() {
 
-    private val _uiStateData = MutableLiveData<UiState>(UiState.InProgress)
-    val uiStateLiveData get(): LiveData<UiState> = _uiStateData
+    private val _uiStateFlow = MutableStateFlow<UiState>(UiState.InProgress)
+    val uiStateFlow get(): StateFlow<UiState> = _uiStateFlow
+    private val jobs: MutableList<Job> = mutableListOf()
+    private var multiplier = BigDecimal("1.0")
 
-    fun onBaseCurrencyValueChanged(uiCurrencyModel: UiCurrencyModel, uiCurrencyModelList: List<UiCurrencyModel>, adapterPosition: Int) {
-        for (i in 0 until uiCurrencyModelList.size) {
-            uiCurrencyModel.multiplier?.let { uiCurrencyModelList[i].multiplier?.div(it) }
-            when (i) {
-                in 0 until adapterPosition -> {
-                    uiCurrencyModelList[i].multiplier = BigDecimal("1.0")
+
+    init {
+        getCurrencyStateFlow(baseCurrencyValueList.first(), false)
+    }
+
+    fun getCurrencyStateFlow(base: String, hasBaseCurrencyChanged: Boolean) {
+        if (!jobs.isEmpty()) {
+            jobs.forEach { it.cancel() }
+            jobs.clear()
+        }
+        val exceptionHandler =
+            CoroutineExceptionHandler { _, _ -> _uiStateFlow.value = UiState.Error }
+        val job = viewModelScope.launch(exceptionHandler) {
+            interactor.getCurrencyStateFlow(base)
+                .catch { e ->
+                    _uiStateFlow.value = UiState.Error
+                }
+                .collectLatest { uiCurrencyModelList ->
+                    val uiStateList: CopyOnWriteArrayList<UiCurrencyModel> =
+                        CopyOnWriteArrayList(uiCurrencyModelList)
+                    uiStateList.forEach { uiCurrencyModel ->
+                        uiCurrencyModel.currencyValue =
+                            uiCurrencyModel.currencyValue?.times(multiplier)
+                                ?.setScale(2, BigDecimal.ROUND_HALF_EVEN)
+                    }
+                    if (hasBaseCurrencyChanged) {
+                        uiStateList.forEach { uiCurrencyModel ->
+                            if (uiCurrencyModel.currencyCode == base) {
+                                uiStateList.remove(uiCurrencyModel).also {
+                                    uiStateList.add(0, uiCurrencyModel)
+                                }
+                            }
+                        }
+                        _uiStateFlow.value = UiState.Success(uiStateList)
+                    } else {
+                        _uiStateFlow.value = UiState.Success(uiStateList)
+                    }
+                }
+        }
+        jobs.add(job)
+    }
+
+    fun onBaseCurrencyValueChanged(
+        newBaseCurrencyValue: BigDecimal?,
+        baseCurrency: String
+    ) {
+        _uiStateFlow.value.let { uiState ->
+            when (uiState) {
+                is UiState.Success -> {
+                    uiState.data.forEach { uiCurrencyModel ->
+                        if (uiCurrencyModel.currencyCode.equals(baseCurrency)) {
+                            if (newBaseCurrencyValue != null) {
+                                uiCurrencyModel.currencyValue?.let {
+                                    if (it > BigDecimal.ZERO) {
+                                        multiplier = newBaseCurrencyValue.div(it)
+                                        return@forEach
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
-    fun onBaseValueChanged(base: String) {
-        val exceptionHandler =
-            CoroutineExceptionHandler { _, _ -> _uiStateData.postValue(UiState.Error) }
-        viewModelScope.launch(exceptionHandler) {
-            interactor.getCurrencyStateFlow(base)
-                .catch { e ->
-                    _uiStateData.postValue(UiState.Error)
-                }
-                .collect { _uiStateData.postValue(UiState.Success(it)) }
-        }
-    }
-
     sealed class UiState {
-        data class Success(val data: List<UiCurrencyModel>) : UiState()
+        data class Success(val data: CopyOnWriteArrayList<UiCurrencyModel>) : UiState()
         object Error : UiState()
         object InProgress : UiState()
     }

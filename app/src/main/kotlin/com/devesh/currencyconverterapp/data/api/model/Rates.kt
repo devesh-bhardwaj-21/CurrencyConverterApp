@@ -1,70 +1,71 @@
 package com.devesh.currencyconverterapp.data.api.model
 
 import com.google.gson.annotations.SerializedName
+import java.math.BigDecimal
 
 data class Rates(
     @SerializedName("CHF")
-    val chf: Double = 0.0,
+    val chf: BigDecimal = BigDecimal.ZERO,
     @SerializedName("HRK")
-    val hrk: Double = 0.0,
+    val hrk: BigDecimal = BigDecimal.ZERO,
     @SerializedName("MXN")
-    val mxn: Double = 0.0,
+    val mxn: BigDecimal = BigDecimal.ZERO,
     @SerializedName("ZAR")
-    val zar: Double = 0.0,
+    val zar: BigDecimal = BigDecimal.ZERO,
     @SerializedName("CNY")
-    val cny: Double = 0.0,
+    val cny: BigDecimal = BigDecimal.ZERO,
     @SerializedName("THB")
-    val thb: Double = 0.0,
+    val thb: BigDecimal = BigDecimal.ZERO,
     @SerializedName("AUD")
-    val aud: Double = 0.0,
+    val aud: BigDecimal = BigDecimal.ZERO,
     @SerializedName("ILS")
-    val ils: Double = 0.0,
+    val ils: BigDecimal = BigDecimal.ZERO,
     @SerializedName("KRW")
-    val krw: Double = 0.0,
+    val krw: BigDecimal = BigDecimal.ZERO,
     @SerializedName("JPY")
-    val jpy: Double = 0.0,
+    val jpy: BigDecimal = BigDecimal.ZERO,
     @SerializedName("PLN")
-    val pln: Double = 0.0,
+    val pln: BigDecimal = BigDecimal.ZERO,
     @SerializedName("GBP")
-    val gbp: Double = 0.0,
+    val gbp: BigDecimal = BigDecimal.ZERO,
     @SerializedName("IDR")
-    val idr: Double = 0.0,
+    val idr: BigDecimal = BigDecimal.ZERO,
     @SerializedName("HUF")
-    val huf: Double = 0.0,
+    val huf: BigDecimal = BigDecimal.ZERO,
     @SerializedName("PHP")
-    val php: Double = 0.0,
+    val php: BigDecimal = BigDecimal.ZERO,
     @SerializedName("TRY")
-    val TRY: Double = 0.0,
+    val TRY: BigDecimal = BigDecimal.ZERO,
     @SerializedName("RUB")
-    val rub: Double = 0.0,
+    val rub: BigDecimal = BigDecimal.ZERO,
     @SerializedName("HKD")
-    val hkd: Double = 0.0,
+    val hkd: BigDecimal = BigDecimal.ZERO,
     @SerializedName("ISK")
-    val isk: Double = 0.0,
+    val isk: BigDecimal = BigDecimal.ZERO,
     @SerializedName("EUR")
-    val eur: Double = 0.0,
+    val eur: BigDecimal = BigDecimal.ZERO,
     @SerializedName("DKK")
-    val dkk: Double = 0.0,
+    val dkk: BigDecimal = BigDecimal.ZERO,
     @SerializedName("CAD")
-    val cad: Double = 0.0,
+    val cad: BigDecimal = BigDecimal.ZERO,
     @SerializedName("MYR")
-    val myr: Double = 0.0,
+    val myr: BigDecimal = BigDecimal.ZERO,
     @SerializedName("USD")
-    val usd: Double = 0.0,
+    val usd: BigDecimal = BigDecimal.ZERO,
     @SerializedName("BGN")
-    val bgn: Double = 0.0,
+    val bgn: BigDecimal = BigDecimal.ZERO,
     @SerializedName("NOK")
-    val nok: Double = 0.0,
+    val nok: BigDecimal = BigDecimal.ZERO,
     @SerializedName("RON")
-    val ron: Double = 0.0,
+    val ron: BigDecimal = BigDecimal.ZERO,
     @SerializedName("SGD")
-    val sgd: Double = 0.0,
+    val sgd: BigDecimal = BigDecimal.ZERO,
     @SerializedName("CZK")
-    val czk: Double = 0.0,
+    val czk: BigDecimal = BigDecimal.ZERO,
     @SerializedName("SEK")
-    val sek: Double = 0.0,
+    val sek: BigDecimal = BigDecimal.ZERO,
     @SerializedName("NZD")
-    val nzd: Double = 0.0,
+    val nzd: BigDecimal = BigDecimal.ZERO,
     @SerializedName("BRL")
-    val brl: Double = 0.0
+    val brl: BigDecimal = BigDecimal.ZERO
 )

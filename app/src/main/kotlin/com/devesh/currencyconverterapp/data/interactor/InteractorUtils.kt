@@ -3,8 +3,9 @@ package com.devesh.currencyconverterapp.data.interactor
 import com.devesh.currencyconverterapp.R
 import com.devesh.currencyconverterapp.data.api.model.Rates
 import com.devesh.currencyconverterapp.utils.AppConstants
+import java.math.BigDecimal
 
-class InteractorUtils {
+object InteractorUtils {
 
     val uiCurrencyMap = hashMapOf<String, Pair<Int, Int>>()
 
@@ -43,8 +44,8 @@ class InteractorUtils {
         uiCurrencyMap[AppConstants.CURRENCY_CODE_BRL] = Pair(R.drawable.ic_brl_flag, R.string.currency_brl_name)
     }
 
-    fun convertCurrencyToMap(rates: Rates): HashMap<String, Double> {
-        val uiCurrencyRateMap = hashMapOf<String, Double>()
+    fun convertCurrencyToMap(rates: Rates): HashMap<String, BigDecimal> {
+        val uiCurrencyRateMap = hashMapOf<String, BigDecimal>()
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_USD] = rates.usd
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_EUR] = rates.eur
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_CHF] = rates.chf

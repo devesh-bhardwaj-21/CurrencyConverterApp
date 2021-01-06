@@ -3,7 +3,6 @@ package com.devesh.currencyconverterapp.ui.currency.adapter
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.res.ResourcesCompat
@@ -17,14 +16,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.text.ParseException
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class CurrencyAdapter :
+class CurrencyAdapter @Inject constructor(val currencyFragment: CurrencyFragment) :
     ListAdapter<UiCurrencyModel, CurrencyAdapter.ViewHolder>(CurrencyConverterDiffCallback()) {
 
-    var newBaseCurrencyValue: BigDecimal? = null
+    var newBaseCurrencyValue: BigDecimal? = BigDecimal.ZERO
     var numberFormat = NumberFormat.getInstance()
-    private var baseCountView: EditText? = null
+    private var baseCurrency = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -41,37 +41,16 @@ class CurrencyAdapter :
         holder.bind(item)
     }
 
-    private val textWatcher = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (!s.isNullOrEmpty()) {
-                try {
-                    newBaseCurrencyValue = numberFormat.parse(s.toString())?.toDouble()
-                        ?.toBigDecimal()
-                    // update all items except the first one
-                    notifyItemRangeChanged(1, itemCount - 1)
-                } catch (e: ParseException) {
-                    e.printStackTrace()
-                }
-            }
-        }
+    override fun submitList(list: MutableList<UiCurrencyModel>?) {
+        super.submitList(list?.let { ArrayList(it) })
     }
 
-    inner class ViewHolder constructor(val binding: CurrencyItemBinding) :
+    inner class ViewHolder constructor(private val binding: CurrencyItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        private var baseCurrencyEditText: EditText? = null
+
         fun bind(model: UiCurrencyModel) {
-            model.currencyValue =
-                if (adapterPosition == 0) newBaseCurrencyValue else newBaseCurrencyValue?.let {
-                    model.multiplier?.times(
-                        it
-                    )
-                }
-            model.currencyValue = model.currencyValue?.setScale(2, BigDecimal.ROUND_HALF_EVEN)
+            binding.currencyCount.setText(model.currencyValue.toString())
             binding.currencyCode.text = model.currencyCode
             binding.currencyName.text = itemView.context.getString(model.currencyNameId)
             binding.currencyFlag.setImageDrawable(
@@ -82,40 +61,58 @@ class CurrencyAdapter :
                 )
             )
 
-            binding.currencyCount.post { binding.currencyCount.setText(numberFormat.format(model.currencyValue)) }
-            if (adapterPosition == 0) {
+            binding.currencyLayout.tag = model
+            binding.currencyCount.tag = model
+
+            if (layoutPosition == 0) {
                 binding.currencyCount.addTextChangedListener(textWatcher)
-                baseCountView = binding.currencyCount
+                baseCurrencyEditText = binding.currencyCount
             }
 
-            val clickListener = View.OnClickListener { v ->
-                val tag = v?.tag
-
-                // request focus for item that is selected as base
-                val selectedBaseView = binding.currencyCount
-                selectedBaseView.requestFocus()
-                selectedBaseView.setSelection(selectedBaseView.length())
-
-                if (tag is UiCurrencyModel) {
-                    CurrencyFragment().onBaseValueChanged(tag, adapterPosition)
-                    newBaseCurrencyValue = tag.currencyValue
-
-                    if (baseCountView != selectedBaseView) {
-                        // update text watchers
-                        baseCountView?.removeTextChangedListener(textWatcher)
-                        selectedBaseView.addTextChangedListener(textWatcher)
+            binding.currencyCount.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    val currencyEditText = binding.currencyCount
+                    baseCurrency = model.currencyCode
+                    currencyFragment.onBaseCurrencyChanged(
+                        currencyEditText.tag as UiCurrencyModel,
+                        layoutPosition
+                    )
+                    if (baseCurrencyEditText != currencyEditText) {
+                        baseCurrencyEditText?.removeTextChangedListener(textWatcher)
+                        currencyEditText.addTextChangedListener(textWatcher)
                     }
                 }
             }
-            binding.currencyLayout.setOnClickListener(clickListener)
-            binding.currencyCount.setOnClickListener(clickListener)
+        }
+
+        private val textWatcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!s.isNullOrEmpty()) {
+                    try {
+                        newBaseCurrencyValue = numberFormat.parse(s.toString())?.toDouble()
+                            ?.toBigDecimal()
+                        currencyFragment.onBaseCurrencyValueChanged(
+                            newBaseCurrencyValue,
+                            baseCurrency
+                        )
+                    } catch (e: ParseException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
         }
     }
 }
 
 class CurrencyConverterDiffCallback : DiffUtil.ItemCallback<UiCurrencyModel>() {
     override fun areItemsTheSame(oldItem: UiCurrencyModel, newItem: UiCurrencyModel): Boolean {
-        return oldItem == newItem
+        return oldItem.currencyCode == newItem.currencyCode
     }
 
     override fun areContentsTheSame(oldItem: UiCurrencyModel, newItem: UiCurrencyModel): Boolean {
