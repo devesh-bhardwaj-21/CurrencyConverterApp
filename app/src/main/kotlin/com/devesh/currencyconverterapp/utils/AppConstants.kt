@@ -8,8 +8,8 @@ val baseUrl: BaseUrl = BaseUrl("https://revolut.duckdns.org/")*/
 const val baseUrl = "http://192.168.29.116:8080/"
 
 object AppConstants {
-    const val TIME_OUT_CONNECT = 30
-    const val TIME_OUT_READ = 30
+    const val TIME_OUT_CONNECT = 5
+    const val TIME_OUT_READ = 20
 
     const val CURRENCY_CODE_USD = "USD"
     const val CURRENCY_CODE_EUR = "EUR"
