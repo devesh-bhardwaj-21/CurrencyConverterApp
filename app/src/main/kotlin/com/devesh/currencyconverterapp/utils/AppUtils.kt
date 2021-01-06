@@ -3,6 +3,9 @@ package com.devesh.currencyconverterapp.utils
 import android.graphics.Color
 import android.view.View
 import android.widget.TextView
+import com.devesh.currencyconverterapp.data.api.model.Rates
+import com.devesh.currencyconverterapp.data.interactor.InteractorUtils
+import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -58,4 +61,20 @@ val baseCurrencyValueList = arrayListOf(
     "BRL",
     "INR"
 )
+
+fun loadInitialUiData(): List<UiCurrencyModel> {
+    val uiCurrencyList: MutableList<UiCurrencyModel> = arrayListOf()
+    val currencyRateMap = InteractorUtils.convertCurrencyToMap(Rates())
+    InteractorUtils.uiCurrencyMap.forEach { (key, value) ->
+        uiCurrencyList.add(
+            UiCurrencyModel(
+                key,
+                currencyRateMap.getValue(key),
+                value.first,
+                value.second
+            )
+        )
+    }
+    return uiCurrencyList
+}
 
