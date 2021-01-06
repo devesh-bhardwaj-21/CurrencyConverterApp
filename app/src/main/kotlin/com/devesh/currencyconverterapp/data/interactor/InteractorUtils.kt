@@ -1,7 +1,9 @@
 package com.devesh.currencyconverterapp.data.interactor
 
 import com.devesh.currencyconverterapp.R
+import com.devesh.currencyconverterapp.data.api.model.CurrencyModel
 import com.devesh.currencyconverterapp.data.api.model.Rates
+import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import com.devesh.currencyconverterapp.utils.AppConstants
 import java.math.BigDecimal
 
@@ -79,5 +81,21 @@ object InteractorUtils {
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_NZD] = rates.nzd
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_BRL] = rates.brl
         return uiCurrencyRateMap
+    }
+
+    fun mapServerDataToUiData(currencyModel: CurrencyModel): List<UiCurrencyModel> {
+        val uiCurrencyList: MutableList<UiCurrencyModel> = arrayListOf()
+        val currencyRateMap = convertCurrencyToMap(currencyModel.rates)
+        uiCurrencyMap.forEach { (key, value) ->
+            uiCurrencyList.add(
+                UiCurrencyModel(
+                    key,
+                    currencyRateMap.getValue(key),
+                    value.first,
+                    value.second
+                )
+            )
+        }
+        return uiCurrencyList
     }
 }

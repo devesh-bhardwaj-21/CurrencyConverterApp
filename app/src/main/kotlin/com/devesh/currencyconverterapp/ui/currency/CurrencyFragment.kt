@@ -12,7 +12,6 @@ import com.devesh.currencyconverterapp.R
 import com.devesh.currencyconverterapp.databinding.CurrencyFragmentBinding
 import com.devesh.currencyconverterapp.ui.currency.adapter.CurrencyAdapter
 import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
-import com.devesh.currencyconverterapp.utils.loadInitialUiData
 import com.devesh.currencyconverterapp.utils.showNoDataError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -83,9 +82,6 @@ class CurrencyFragment : Fragment(R.layout.currency_fragment) {
                     }
                     is CurrencyViewModel.UiState.InProgress -> {
                         Timber.d("Api is in Progress")
-                        binding.progressBar.visibility = View.GONE
-                        uiCurrencyModelList.addAll(loadInitialUiData())
-                        adapter.submitList(uiCurrencyModelList)
                     }
                 }
             }

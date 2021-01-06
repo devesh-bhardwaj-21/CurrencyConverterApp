@@ -3,7 +3,10 @@ package com.devesh.currencyconverterapp.ui.currency
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.devesh.currencyconverterapp.data.api.model.CurrencyModel
+import com.devesh.currencyconverterapp.data.api.model.Rates
 import com.devesh.currencyconverterapp.data.interactor.CurrencyInteractor
+import com.devesh.currencyconverterapp.data.interactor.InteractorUtils
 import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import com.devesh.currencyconverterapp.utils.baseCurrencyValueList
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -42,6 +45,7 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
             interactor.getCurrencyStateFlow(base)
                 .catch { e ->
                     _uiStateFlow.value = UiState.Error
+                    emit(InteractorUtils.mapServerDataToUiData(CurrencyModel("", Rates(), "")))
                 }
                 .collectLatest { uiCurrencyModelList ->
                     val uiStateList: CopyOnWriteArrayList<UiCurrencyModel> =

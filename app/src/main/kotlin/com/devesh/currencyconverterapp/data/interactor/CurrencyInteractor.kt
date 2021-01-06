@@ -1,8 +1,8 @@
 package com.devesh.currencyconverterapp.data.interactor
 
 import com.devesh.currencyconverterapp.data.api.model.CurrencyModel
-import com.devesh.currencyconverterapp.data.interactor.InteractorUtils.convertCurrencyToMap
-import com.devesh.currencyconverterapp.data.interactor.InteractorUtils.uiCurrencyMap
+import com.devesh.currencyconverterapp.data.api.model.Rates
+import com.devesh.currencyconverterapp.data.interactor.InteractorUtils.mapServerDataToUiData
 import com.devesh.currencyconverterapp.data.repository.CurrencyRepository
 import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import kotlinx.coroutines.Dispatchers
@@ -21,27 +21,12 @@ class CurrencyInteractor @Inject constructor(private val repository: CurrencyRep
         return repository.getCurrencyFlow(base)
             .catch { e ->
                 Timber.e(e.localizedMessage)
+                emit(CurrencyModel("", Rates(), ""))
             }
             .map { currencyModel ->
                 mapServerDataToUiData(currencyModel)
 
             }.flowOn(Dispatchers.IO)
-    }
-
-    private fun mapServerDataToUiData(currencyModel: CurrencyModel): List<UiCurrencyModel> {
-        val uiCurrencyList: MutableList<UiCurrencyModel> = arrayListOf()
-        val currencyRateMap = convertCurrencyToMap(currencyModel.rates)
-        uiCurrencyMap.forEach { (key, value) ->
-            uiCurrencyList.add(
-                UiCurrencyModel(
-                    key,
-                    currencyRateMap.getValue(key),
-                    value.first,
-                    value.second
-                )
-            )
-        }
-        return uiCurrencyList
     }
 
 }
