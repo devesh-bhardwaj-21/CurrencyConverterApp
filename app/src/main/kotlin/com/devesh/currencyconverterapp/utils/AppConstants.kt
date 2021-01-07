@@ -13,6 +13,7 @@ object AppConstants {
 
     const val CURRENCY_CODE_USD = "USD"
     const val CURRENCY_CODE_EUR = "EUR"
+    const val CURRENCY_CODE_INR = "INR"
     const val CURRENCY_CODE_CHF = "CHF"
     const val CURRENCY_CODE_HRK = "HRK"
     const val CURRENCY_CODE_MXN = "MXN"
@@ -43,5 +44,4 @@ object AppConstants {
     const val CURRENCY_CODE_SEK = "SEK"
     const val CURRENCY_CODE_NZD = "NZD"
     const val CURRENCY_CODE_BRL = "BRL"
-    const val CURRENCY_CODE_INR = "INR"
 }

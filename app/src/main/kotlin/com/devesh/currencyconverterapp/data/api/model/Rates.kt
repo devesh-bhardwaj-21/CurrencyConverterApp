@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
 
 data class Rates(
+    @SerializedName("INR")
+    val inr: BigDecimal = BigDecimal.ZERO,
     @SerializedName("CHF")
     val chf: BigDecimal = BigDecimal.ZERO,
     @SerializedName("HRK")

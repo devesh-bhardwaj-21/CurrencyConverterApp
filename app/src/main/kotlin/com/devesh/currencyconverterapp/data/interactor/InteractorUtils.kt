@@ -14,6 +14,7 @@ object InteractorUtils {
     init {
         uiCurrencyMap[AppConstants.CURRENCY_CODE_USD] = Pair(R.drawable.ic_usd_flag, R.string.currency_usd_name)
         uiCurrencyMap[AppConstants.CURRENCY_CODE_EUR] = Pair(R.drawable.ic_eur_flag, R.string.currency_eur_name)
+        uiCurrencyMap[AppConstants.CURRENCY_CODE_INR] = Pair(R.drawable.ic_inr_flag, R.string.currency_inr_name)
         uiCurrencyMap[AppConstants.CURRENCY_CODE_CHF] = Pair(R.drawable.ic_chf_flag, R.string.currency_chf_name)
         uiCurrencyMap[AppConstants.CURRENCY_CODE_HRK] = Pair(R.drawable.ic_hrk_flag, R.string.currency_hrk_name)
         uiCurrencyMap[AppConstants.CURRENCY_CODE_MXN] = Pair(R.drawable.ic_mxn_flag, R.string.currency_mxn_name)
@@ -50,6 +51,7 @@ object InteractorUtils {
         val uiCurrencyRateMap = hashMapOf<String, BigDecimal>()
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_USD] = rates.usd
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_EUR] = rates.eur
+        uiCurrencyRateMap[AppConstants.CURRENCY_CODE_INR] = rates.inr
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_CHF] = rates.chf
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_HRK] = rates.hrk
         uiCurrencyRateMap[AppConstants.CURRENCY_CODE_MXN] = rates.mxn

@@ -26,6 +26,7 @@ fun showNoDataError(view: View?, errorMessage: String) {
 val baseCurrencyValueList = arrayListOf(
     "USD",
     "EUR",
+    "INR",
     "CHF",
     "HRK",
     "MXN",
@@ -55,7 +56,6 @@ val baseCurrencyValueList = arrayListOf(
     "CZK",
     "SEK",
     "NZD",
-    "BRL",
-    "INR"
+    "BRL"
 )
 
