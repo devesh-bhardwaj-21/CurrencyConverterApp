@@ -92,18 +92,19 @@ class CurrencyAdapter @Inject constructor(val currencyFragment: CurrencyFragment
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!s.isNullOrEmpty()) {
-                    try {
-                        newBaseCurrencyValue = numberFormat.parse(s.toString())?.toDouble()
-                            ?.toBigDecimal()
-                        currencyFragment.onBaseCurrencyValueChanged(
-                            newBaseCurrencyValue,
-                            baseCurrency
-                        )
-                    } catch (e: ParseException) {
-                        e.printStackTrace()
-                    }
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                if (text.isNullOrEmpty()) {
+                    return
+                }
+                try {
+                    newBaseCurrencyValue = numberFormat.parse(text.toString())?.toDouble()
+                        ?.toBigDecimal()
+                    currencyFragment.onBaseCurrencyValueChanged(
+                        newBaseCurrencyValue,
+                        baseCurrency
+                    )
+                } catch (e: ParseException) {
+                    e.printStackTrace()
                 }
             }
         }

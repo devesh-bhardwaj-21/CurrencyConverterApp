@@ -6,19 +6,19 @@ import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 
 
-fun showNoDataError(view: View?, errorMessage: String) {
-    val snackBar = view?.let {
+fun View.showNoDataError(errorMessage: String) {
+    val snackBar = this.let {
         Snackbar.make(
             it,
             errorMessage,
             Snackbar.LENGTH_LONG
         ).setAction("Action", null)
     }
-    snackBar?.setActionTextColor(Color.BLUE)
-    val snackBarView = snackBar?.view
-    snackBarView?.setBackgroundColor(Color.CYAN)
+    snackBar.setActionTextColor(Color.BLUE)
+    val snackBarView = snackBar.view
+    snackBarView.setBackgroundColor(Color.CYAN)
     val textView =
-        snackBarView?.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+        snackBarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
     textView.setTextColor(Color.BLUE)
     snackBar.show()
 }

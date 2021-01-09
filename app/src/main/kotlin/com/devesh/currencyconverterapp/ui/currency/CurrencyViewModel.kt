@@ -35,7 +35,7 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
     }
 
     fun getCurrencyStateFlow(base: String, hasBaseCurrencyChanged: Boolean) {
-        if (!jobs.isEmpty()) {
+        if (jobs.isNotEmpty()) {
             jobs.forEach { it.cancel() }
             jobs.clear()
         }
@@ -97,7 +97,7 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
     }
 
     sealed class UiState {
-        data class Success(val data: CopyOnWriteArrayList<UiCurrencyModel>) : UiState()
+        class Success(val data: List<UiCurrencyModel>) : UiState()
         object Error : UiState()
         object InProgress : UiState()
     }

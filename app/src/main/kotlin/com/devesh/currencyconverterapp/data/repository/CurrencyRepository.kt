@@ -8,23 +8,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+private const val REFRESH_DELAY = 1000L
+
 @ExperimentalCoroutinesApi
 class CurrencyRepository @Inject constructor(private val apiService: ApiService) {
 
-    private lateinit var currencyFlow: Flow<CurrencyModel>
-
     fun getCurrencyFlow(base: String): Flow<CurrencyModel> {
-        currencyFlow = flow {
+         return flow {
             while (true) {
                 val currencies = apiService.getCurrencyStateFlow(base)
                 emit(currencies)
                 delay(REFRESH_DELAY)
             }
         }
-        return currencyFlow
-    }
-
-    private companion object {
-        const val REFRESH_DELAY = 1000L
     }
 }

@@ -23,10 +23,7 @@ class CurrencyInteractor @Inject constructor(private val repository: CurrencyRep
                 Timber.e(e.localizedMessage)
                 emit(CurrencyModel("", Rates(), ""))
             }
-            .map { currencyModel ->
-                mapServerDataToUiData(currencyModel)
-
-            }.flowOn(Dispatchers.IO)
+            .map { currencyModel -> mapServerDataToUiData(currencyModel) }
+            .flowOn(Dispatchers.IO)
     }
-
 }

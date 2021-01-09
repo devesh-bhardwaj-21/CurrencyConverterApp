@@ -32,7 +32,7 @@ class CurrencyFragment : Fragment(R.layout.currency_fragment) {
         uiCurrencyModel: UiCurrencyModel,
         layoutPosition: Int
     ) {
-        if (uiCurrencyModel.currencyCode.equals(uiCurrencyModelList.first().currencyCode) && layoutPosition == 0) {
+        if (uiCurrencyModel.currencyCode == uiCurrencyModelList.first().currencyCode && layoutPosition == 0) {
             return
         }
         viewModel.getCurrencyStateFlow(uiCurrencyModel.currencyCode, true)
@@ -78,7 +78,9 @@ class CurrencyFragment : Fragment(R.layout.currency_fragment) {
                     is CurrencyViewModel.UiState.Error -> {
                         binding.progressBar.visibility = View.GONE
                         Timber.e("Api failure occurred!")
-                        showNoDataError(view, "\uD83D\uDE28 Wooops! Seems like something is wrong!")
+                        view?.showNoDataError(
+                            "\uD83D\uDE28 Wooops! Seems like something is wrong!")
+
                     }
                     is CurrencyViewModel.UiState.InProgress -> {
                         Timber.d("Api is in Progress")
