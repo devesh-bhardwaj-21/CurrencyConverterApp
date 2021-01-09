@@ -31,7 +31,7 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
 
 
     init {
-        getCurrencyStateFlow(baseCurrencyValueList.first(), false)
+        getCurrencyStateFlow(baseCurrencyValueList.first().toString(), false)
     }
 
     fun getCurrencyStateFlow(base: String, hasBaseCurrencyChanged: Boolean) {

@@ -3,7 +3,7 @@ package com.devesh.currencyconverterapp.di
 import androidx.viewbinding.BuildConfig
 import com.devesh.currencyconverterapp.data.api.ApiService
 import com.devesh.currencyconverterapp.utils.AppConstants
-import com.devesh.currencyconverterapp.utils.baseUrl
+import com.devesh.currencyconverterapp.utils.AppConstants.baseUrl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

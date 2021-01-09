@@ -23,39 +23,5 @@ fun showNoDataError(view: View?, errorMessage: String) {
     snackBar.show()
 }
 
-val baseCurrencyValueList = arrayListOf(
-    "USD",
-    "EUR",
-    "INR",
-    "CHF",
-    "HRK",
-    "MXN",
-    "ZAR",
-    "CNY",
-    "THB",
-    "AUD",
-    "ILS",
-    "KRW",
-    "JPY",
-    "PLN",
-    "GBP",
-    "IDR",
-    "HUF",
-    "PHP",
-    "TRY",
-    "RUB",
-    "HKD",
-    "ISK",
-    "DKK",
-    "CAD",
-    "MYR",
-    "BGN",
-    "NOK",
-    "RON",
-    "SGD",
-    "CZK",
-    "SEK",
-    "NZD",
-    "BRL"
-)
+val baseCurrencyValueList = CurrencyCode.values()
 
