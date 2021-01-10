@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.devesh.currencyconverterapp.databinding.CurrencyItemBinding
-import com.devesh.currencyconverterapp.ui.currency.CurrencyFragment
+import com.devesh.currencyconverterapp.ui.currency.CurrencyViewModel
 import com.devesh.currencyconverterapp.ui.currency.uimodel.UiCurrencyModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.math.BigDecimal
@@ -19,7 +19,9 @@ import java.text.ParseException
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class CurrencyAdapter @Inject constructor(val currencyFragment: CurrencyFragment) :
+class CurrencyAdapter @Inject constructor(
+    val viewModel: CurrencyViewModel
+) :
     ListAdapter<UiCurrencyModel, CurrencyAdapter.ViewHolder>(CurrencyConverterDiffCallback()) {
 
     var newBaseCurrencyValue: BigDecimal? = BigDecimal.ZERO
@@ -41,7 +43,7 @@ class CurrencyAdapter @Inject constructor(val currencyFragment: CurrencyFragment
         holder.bind(item)
     }
 
-    override fun submitList(list: MutableList<UiCurrencyModel>?) {
+    override fun submitList(list: List<UiCurrencyModel>?) {
         super.submitList(list?.let { ArrayList(it) })
     }
 
@@ -61,9 +63,6 @@ class CurrencyAdapter @Inject constructor(val currencyFragment: CurrencyFragment
                 )
             )
 
-            binding.currencyLayout.tag = model
-            binding.currencyCount.tag = model
-
             if (layoutPosition == 0) {
                 binding.currencyCount.addTextChangedListener(textWatcher)
                 baseCurrencyEditText = binding.currencyCount
@@ -73,10 +72,12 @@ class CurrencyAdapter @Inject constructor(val currencyFragment: CurrencyFragment
                 if (hasFocus) {
                     val currencyEditText = binding.currencyCount
                     baseCurrency = model.currencyCode
-                    currencyFragment.onBaseCurrencyChanged(
-                        currencyEditText.tag as UiCurrencyModel,
-                        layoutPosition
-                    )
+                    if (layoutPosition > 0) {
+                             viewModel.getCurrencyStateFlow(
+                                 baseCurrency,
+                                 true
+                             )
+                    }
                     if (baseCurrencyEditText != currencyEditText) {
                         baseCurrencyEditText?.removeTextChangedListener(textWatcher)
                         currencyEditText.addTextChangedListener(textWatcher)
@@ -99,10 +100,10 @@ class CurrencyAdapter @Inject constructor(val currencyFragment: CurrencyFragment
                 try {
                     newBaseCurrencyValue = numberFormat.parse(text.toString())?.toDouble()
                         ?.toBigDecimal()
-                    currencyFragment.onBaseCurrencyValueChanged(
-                        newBaseCurrencyValue,
-                        baseCurrency
-                    )
+                      viewModel.onBaseCurrencyValueChanged(
+                          newBaseCurrencyValue,
+                          baseCurrency
+                      )
                 } catch (e: ParseException) {
                     e.printStackTrace()
                 }

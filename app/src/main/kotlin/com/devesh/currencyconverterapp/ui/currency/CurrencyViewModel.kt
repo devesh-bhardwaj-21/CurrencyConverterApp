@@ -39,6 +39,9 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
             jobs.forEach { it.cancel() }
             jobs.clear()
         }
+        if (hasBaseCurrencyChanged) {
+            _uiStateFlow.value = UiState.BaseCurrencyChanged
+        }
         val exceptionHandler =
             CoroutineExceptionHandler { _, _ -> _uiStateFlow.value = UiState.Error }
         val job = viewModelScope.launch(exceptionHandler) {
@@ -100,5 +103,6 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
         class Success(val data: List<UiCurrencyModel>) : UiState()
         object Error : UiState()
         object InProgress : UiState()
+        object BaseCurrencyChanged : UiState()
     }
 }

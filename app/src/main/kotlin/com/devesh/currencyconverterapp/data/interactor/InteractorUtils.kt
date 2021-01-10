@@ -9,7 +9,7 @@ import java.math.BigDecimal
 
 object InteractorUtils {
 
-    val uiCurrencyMap = hashMapOf<String, Pair<Int, Int>>()
+    private val uiCurrencyMap = hashMapOf<String, Pair<Int, Int>>()
 
     init {
         uiCurrencyMap[CurrencyCode.USD.toString()] = Pair(R.drawable.ic_usd_flag, R.string.currency_usd_name)
