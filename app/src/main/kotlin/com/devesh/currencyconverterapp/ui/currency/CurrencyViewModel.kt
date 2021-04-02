@@ -79,23 +79,25 @@ class CurrencyViewModel @ViewModelInject constructor(private val interactor: Cur
         newBaseCurrencyValue: BigDecimal?,
         baseCurrency: String
     ) {
+        newBaseCurrencyValue ?: return
         _uiStateFlow.value.let { uiState ->
-            when (uiState) {
-                is UiState.Success -> {
-                    uiState.data.forEach { uiCurrencyModel ->
-                        if (uiCurrencyModel.currencyCode.equals(baseCurrency)) {
-                            if (newBaseCurrencyValue != null) {
-                                uiCurrencyModel.currencyValue?.let {
-                                    if (it > BigDecimal.ZERO) {
-                                        multiplier = newBaseCurrencyValue.div(it)
-                                        return@forEach
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            if (uiState is UiState.Success) {
+                calculateMultiplier(uiState.data, newBaseCurrencyValue, baseCurrency)
             }
+        }
+    }
+
+    private fun calculateMultiplier(
+        uiCurrencyModelList: List<UiCurrencyModel>,
+        newBaseCurrencyValue: BigDecimal,
+        baseCurrency: String
+    ) {
+        uiCurrencyModelList.forEach { uiCurrencyModel ->
+            val currencyValue =
+                uiCurrencyModel.currencyValue?.takeIf { uiCurrencyModel.currencyCode == baseCurrency && it > BigDecimal.ZERO }
+            currencyValue ?: return@forEach
+            multiplier = newBaseCurrencyValue.div(currencyValue)
+            return@forEach
         }
     }
 
