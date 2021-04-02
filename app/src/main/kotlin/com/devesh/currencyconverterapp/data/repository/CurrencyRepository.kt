@@ -16,7 +16,7 @@ class CurrencyRepository @Inject constructor(private val apiService: ApiService)
     fun getCurrencyFlow(base: String): Flow<CurrencyModel> {
          return flow {
             while (true) {
-                val currencies = apiService.getCurrencyStateFlow(base)
+                val currencies = apiService.getCurrencyModel(base)
                 emit(currencies)
                 delay(REFRESH_DELAY)
             }

@@ -6,8 +6,8 @@ import retrofit2.http.Path
 
 interface ApiService {
     @GET("currency")
-    suspend fun getCurrencyStateFlow(): CurrencyModel
+    suspend fun getCurrencyModel(): CurrencyModel
 
     @GET("currency/{base}")
-    suspend fun getCurrencyStateFlow(@Path("base") base: String): CurrencyModel
+    suspend fun getCurrencyModel(@Path("base") base: String): CurrencyModel
 }
